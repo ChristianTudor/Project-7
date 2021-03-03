@@ -1,0 +1,26 @@
+{
+  "folders": [
+	{
+		"path": "."
+	},
+	{
+		"path": "../Project_8_to_to_list"
+	},
+	{
+		"path": "../../Projects/HTML&CSS/Conquering Responsive Layouts by Kevin Powell "
+	},
+	{
+		"path": "../../Projects/Java Script/Wesbos"
+	},
+	{
+		"path": "../../Projects/Java Script/Dev Ed - Javascript Course"
+	},
+	{
+		"path": "../project_6"
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "Project_7",
+    "liveServer.settings.port": 5501
+  }
+}
