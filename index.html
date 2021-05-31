@@ -1,20 +1,66 @@
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Document</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Material Design Bootstrap</title>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+      type="text/css"
+    />
+    <!-- Bootstrap core CSS -->
+    <link href="mdb/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Material Design Bootstrap -->
+    <link href="mdb/css/mdb.min.css" rel="stylesheet" type="text/css" />
+    <!-- Your custom styles (optional) -->
+    <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
-
   <body>
-    <div id="map"></div>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- MAP -->
+        <div id="map" class="col-6"></div>
+        <!--ASIDE-->
+        <aside class="col-6">
+          <!-- Select form -->
+          <div class="search d-flex m-3">
+            <select id="minValue" class="browser-default custom-select mr-2">
+              <option selected value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+              <option value="4">Four</option>
+              <option value="5">Five</option>
+            </select>
 
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwvAwHq_QnW9G7nmLRFIJkXRSPSRgvPt8&callback=initMap"
-      async
-      defer
-    ></script>
-    <script src="resto-api.js"></script>
+            <select id="maxValue" class="browser-default custom-select">
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+              <option value="4">Four</option>
+              <option selected value="5">Five</option>
+            </select>
+          </div>
+
+          <div id="resto-list">
+            <div id="small-cards"></div>
+            <div id="big-cards" class="d-none"></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <script src="mdb/js/jquery-3.4.1.min.js"></script>
+    <script src="mdb/js/popper.min.js"></script>
+    <script src="mdb/js/bootstrap.min.js"></script>
+    <script src="mdb/js/mdb.min.js"></script>
+    <script src="mdb/js/addons/rating.js"></script>
+
+    <script src="https://unpkg.com/@googlemaps/js-api-loader@1.0.0/dist/index.min.js"></script>
+    <script type="module" src="js/map.js"></script>
   </body>
 </html>

@@ -41,7 +41,7 @@ export default class Restaurants {
   //! Create Small Card
   createSmallCard({ name, rating, id, photo }) {
 
-    photo = photo || "https://mdbootstrap.com/img/Photos/Horizontal/Food/8-col/img (5).jpg";
+    photo = photo || "https://mdbootstrap.com/img/Photos/Horizontal/Food/8-col/img(5).jpg";
 
     //! Create Small Card
     const smallCard = createElement({
@@ -166,6 +166,7 @@ export default class Restaurants {
     bigCard.appendChild(imageCard);
 
     //! create img
+    
     const image = createElement({
       tag: "img",
       attrs: [
@@ -375,12 +376,15 @@ export default class Restaurants {
 
     //! append ratingsCommentsContainer to bigCard
     bigCard.appendChild(ratingsCommentsContainer);
-
     //! calling display rating function
+    const commentContainer = createElement({
+      tag: "ul"
+    })
     reviews.forEach((item) => {
-      displayComments("comments" + id, item);
+      displayComments(commentContainer, item);
     });
 
+    bigCard.appendChild(commentContainer)
     //! button target modal
     const modalTargetContainer = createElement({
       tag: "div",
@@ -757,12 +761,8 @@ export default class Restaurants {
   }
 
   // display ratings and comments
-  displayComment(id, item) {
-    console.log(item);
-
-    //! getting the ULrestaurantId
-    const commentsContainer = document.getElementById(id);
-
+  displayComment(el, item) {
+   
     //! create li
     const ratingsCommentsList = createElement({
       tag: "li",
@@ -775,7 +775,7 @@ export default class Restaurants {
     });
 
     //! append li to ul
-    commentsContainer.appendChild(ratingsCommentsList);
+    el.appendChild(ratingsCommentsList);
 
     //! create user img
     const reviewImageUser = createElement({
@@ -832,7 +832,7 @@ export default class Restaurants {
     //! create stars
     let stars = item.stars || item.rating;
     console.log(stars);
-    for (i = 0; i < stars; i++) {
+    for (let i = 0; i < stars; i++) {
       const starsReview = createElement({
         tag: "i",
         attrs: [
@@ -854,17 +854,6 @@ export default class Restaurants {
     reviews.textContent = item.comment || item.text;
     starsUserNameContainer.appendChild(reviews);
     console.log(reviews);
-  }
-
-
-  displayComment(comment){
-    const commentWrapper = createElement({tag: 'div', attrs: [{name: 'class', value: 'comment'}]})
-    const commentElement = createElement({tag: 'div', attrs: [{name: 'class', value: 'comment-body'}]})
-    commentElement.textContent = comment
-    commentWrapper.appendChild(commentElement)
-
-    return commentWrapper
-
   }
 
   // MODAL

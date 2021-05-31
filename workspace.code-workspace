@@ -17,10 +17,13 @@
 	},
 	{
 		"path": "../project_6"
+	},
+	{
+		"path": "../../Projects/HTML&CSS/Natours"
 	}
 ],
   "settings": {
-    "liveServer.settings.multiRootWorkspaceName": "Project_7",
+    "liveServer.settings.multiRootWorkspaceName": "Natours",
     "liveServer.settings.port": 5501
   }
 }

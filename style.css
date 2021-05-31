@@ -1,12 +1,17 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+#row {
+  height: 100vh;
+}
+.map {
+  height: 100%;
+}
 
-
-#map {
-    height: 100vh;
-    width: 80vw;
+aside {
+  height: 100vh;
+  overflow: scroll;
 }
