@@ -1028,12 +1028,30 @@ export default class Restaurants {
     //! append submit btn to submit review btn
     submitReviewBtn.appendChild(submitBtn);
 
+    //! value of ratingStars
+    function amberStar(){
+      const ratingStars = document.querySelector('#rateMe1');
+      console.log(ratingStars)
+      const itemsRatingStars = ratingStars.querySelectorAll('.amber-text')
+      console.log(itemsRatingStars)
+      if(itemsRatingStars.length > 0){
+        let selectedStars = 0
+        for(let i=0; i<itemsRatingStars.length; i++){
+          ++selectedStars        
+        }
+        return selectedStars
+      }
+     
+    };
+
+
     //! add event listener to the submit btn
     submitBtn.addEventListener("click", function () {
       const nameWriteComment = userNameInput.value;
       const messageWriteComment = mdFormTextarea.value;
-      displayComments("comments" + id, {
-        rating: 1,
+      const commentsList = document.querySelector('#comments' + id)
+      displayComments(commentsList, {
+        rating: amberStar(),
         comment: messageWriteComment,
       });
       userNameInput.value = "";
