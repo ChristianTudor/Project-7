@@ -32,7 +32,9 @@ function initMap() {
 
   //right click
   map.addListener("click", (event) => {
-    const addForm = restaurant.addForm(event.latLng.lat(), event.latLng.lng());
+    let id = "add-restaurant-" + Date.now(); //! Add a unique ID to the form using Date.now()
+
+    const addForm = restaurant.addForm(event.latLng.lat(), event.latLng.lng(), id);
     let infoWindow = new google.maps.InfoWindow({
       content: addForm,
     });
@@ -57,7 +59,7 @@ function initMap() {
           lng: position.coords.longitude,
         };
         map.setCenter(pos);
-        requestRestaurants(pos);
+        //requestRestaurants(pos);
       },
       function () {
         handleLocationError(true, infoWindow, map.getCenter());
@@ -65,7 +67,7 @@ function initMap() {
     );
   } else {
     //! Browser doesn't support Geolocation
-    requestRestaurants(pos);
+    //requestRestaurants(pos);
   }
 
   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -77,8 +79,34 @@ function initMap() {
     );
     infoWindow.open(map);
   }
+
+  const minValue = document.getElementById("minValue");
+  const maxValue = document.getElementById("maxValue");
+
+  minValue.addEventListener("change", () =>{
+    let pos = {
+      lat: map.getCenter().lat(),
+      lng: map.getCenter().lng()
+    }
+    requestRestaurants(pos)
+  })
+  
+  maxValue.addEventListener("change", ()=>{
+    let pos = {
+      lat: map.getCenter().lat(),
+      lng: map.getCenter().lng()
+    }
+    requestRestaurants(pos)
+  })
   
   function requestRestaurants(pos) {
+
+    const minValue = document.getElementById("minValue");
+    const maxValue = document.getElementById("maxValue");
+
+    
+
+    
     infoWindow.setPosition(pos);
     infoWindow.setContent("Location found.");
     infoWindow.open(map);
@@ -102,9 +130,66 @@ function initMap() {
 
         for (var i = 0; i < results.length; i++) {
           const place = results[i];
+
+            if (
+             place.rating >= minValue.selectedOptions[0].value &&
+             place.rating <= maxValue.selectedOptions[0].value
+           ){
+             
           //console.log(place);
           // console.log(place.geometry.location.lat());
-          createMarker(place.geometry.location, map, place.name);
+          const theMarker = createMarker(place.geometry.location, map, place.name);
+          theMarker.addListener("click", () =>{
+            let request = {
+              placeId:place.place_id,
+              fields: [
+                "name",
+                "rating",
+                "reviews",
+                "opening_hours",
+                "types",
+                "formatted_address",
+                "formatted_phone_number",
+                "website",
+              ],
+            };
+
+            service.getDetails(request, callback);
+            // replace place with placeResult
+            function callback(placeResult, placesServiceStatus) {
+              console.log(placeResult)
+              
+              const bigCardsContainer = document.getElementById("big-cards");
+
+              smallCardsContainer.classList.add("d-none");
+              bigCardsContainer.classList.remove("d-none");
+
+              const openedHours = placeResult.opening_hours ? placeResult.opening_hours.weekday_text : [];
+              const bigCard = restaurant.createBigCard({
+                name: placeResult.name,
+                address: placeResult.formatted_address,
+                url: placeResult.website,
+                phone: placeResult.formatted_phone_number,
+                reviews: placeResult.reviews,
+                lat: position.lat,
+                long: position.long,
+                id: place.place_id,
+                openedHours: openedHours,
+                rating: placeResult.rating,
+                
+                
+                clickGoBack: () => {
+                  smallCardsContainer.classList.remove("d-none");
+                  bigCardsContainer.classList.add("d-none");
+                  bigCardsContainer.innerHTML = "";
+                },
+              });
+
+              bigCardsContainer.appendChild(bigCard);
+            }
+            
+          })
+          
           const position = {
             lat: place.geometry.location.lat(),
             long: place.geometry.location.lng()
@@ -140,23 +225,24 @@ function initMap() {
             service.getDetails(request, callback);
             // replace place with placeResult
             function callback(placeResult, placesServiceStatus) {
+              console.log(placeResult)
               
               const bigCardsContainer = document.getElementById("big-cards");
 
               smallCardsContainer.classList.add("d-none");
               bigCardsContainer.classList.remove("d-none");
 
-              const openingHours = place.opening_hours ? place.opening_hours.weekday_text : [];
+              const openedHours = placeResult.opening_hours ? placeResult.opening_hours.weekday_text : [];
               const bigCard = restaurant.createBigCard({
                 name: placeResult.name,
-                address: placeResult.vicinity,
-                url: placeResult.url,
-                phone: placeResult.phone,
+                address: placeResult.formatted_address,
+                url: placeResult.website,
+                phone: placeResult.formatted_phone_number,
                 reviews: placeResult.reviews,
                 lat: position.lat,
                 long: position.long,
                 id: place.place_id,
-                openedHours: openingHours,
+                openedHours: openedHours,
                 rating: placeResult.rating,
                 
                 
@@ -171,6 +257,7 @@ function initMap() {
             }
           });
         }
+      }
       }
     }
   }

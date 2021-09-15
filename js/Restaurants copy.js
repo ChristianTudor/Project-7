@@ -41,7 +41,9 @@ export default class Restaurants {
   //! Create Small Card
   createSmallCard({ name, rating, id, photo }) {
 
-    photo = photo || "https://mdbootstrap.com/img/Photos/Horizontal/Food/8-col/img(5).jpg";
+    let randomNumber = Math.ceil(Math.random() * 50)
+
+    photo = photo || "https://mdbootstrap.com/img/Photos/Horizontal/Food/8-col/img("+randomNumber+").jpg";
 
     //! Create Small Card
     const smallCard = createElement({
@@ -54,9 +56,9 @@ export default class Restaurants {
         {
           name: "style",
           value:
-            "background-image: url(" +
+            'background-image: url("'+
             photo +
-            "); background-size: cover; background-position: center",
+            '"); background-size: cover; background-position: center',
         },
         {
           name: "id",
@@ -457,9 +459,8 @@ export default class Restaurants {
   }
 
   // Add Form
-  addForm(lat, long) {
+  addForm(lat, long, id) {
     //! create a unique ID
-    let id = "add-restaurant-" + Date.now(); //! Add a unique ID to the form using Date.now()
 
     //! Create Form
     //! Add MDB bootstrap forms to the info window using javascript
@@ -743,9 +744,7 @@ export default class Restaurants {
       const restaurantUrl = restoWebsite.value;
       const restaurantTelephone = restoTelephone.value;
       const restaurantRating = restoRating.value;
-      const restaurantId = Date.now();
-      console.log(restaurantId);
-
+      
       this.createSmallCard({
         name: restaurantName,
         address: restaurantAddress,
@@ -754,7 +753,7 @@ export default class Restaurants {
         rating: restaurantRating,
         lat: lat,
         long: long,
-        id: restaurantId,
+        id: id
       });
     });
     return addForm;
@@ -1015,6 +1014,7 @@ export default class Restaurants {
       "modal-footer",
       "d-flex",
       "justify-content-center"
+    
     );
 
     //! append submit review btn to the 3th div
@@ -1053,9 +1053,12 @@ export default class Restaurants {
       displayComments(commentsList, {
         rating: amberStar(),
         comment: messageWriteComment,
+        author_name: nameWriteComment
       });
       userNameInput.value = "";
       mdFormTextarea.value = "";
+      $("#rateMe1").html("");
+      $("#modalContactForm").close() //! to be fixed the closing function
       console.log(nameWriteComment, messageWriteComment);
     });
   }
