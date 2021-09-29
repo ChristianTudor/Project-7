@@ -136,8 +136,7 @@ function initMap() {
              place.rating <= maxValue.selectedOptions[0].value
            ){
              
-          //console.log(place);
-          // console.log(place.geometry.location.lat());
+        
           const theMarker = createMarker(place.geometry.location, map, place.name);
           theMarker.addListener("click", () =>{
             let request = {
