@@ -1,14 +1,12 @@
 import { createElement, average } from "./utils.js";
-
 export default class Restaurants {
   constructor() {
     this.restaurants = [];
   }
 
-  // Add Form
+  //! Add Form
   addForm(lat, long, id) {
     //! create a unique ID
-
     //! Create Form
     //! Add MDB bootstrap forms to the info window using javascript
     const addForm = createElement({
@@ -50,6 +48,10 @@ export default class Restaurants {
         {
           name: "class",
           value: "form-control restaurant-name",
+        },
+        {
+          name: "name",
+          value: "restoName",
         },
       ],
     });
@@ -96,6 +98,10 @@ export default class Restaurants {
           name: "class",
           value: "form-control restaurant-address",
         },
+        {
+          name: "name",
+          value: "restoAddress",
+        },
       ],
     });
 
@@ -140,6 +146,10 @@ export default class Restaurants {
         {
           name: "class",
           value: "form-control restaurant-website",
+        },
+        {
+          name: "name",
+          value: "restoWebsite",
         },
       ],
     });
@@ -186,6 +196,10 @@ export default class Restaurants {
           name: "class",
           value: "form-control restaurant-telephone",
         },
+        {
+          name: "name",
+          value: "restoTelephone",
+        },
       ],
     });
 
@@ -223,6 +237,10 @@ export default class Restaurants {
           name: "class",
           value: "mdb-select md-form colorful-select dropdown-primary",
         },
+        {
+          name: "name",
+          value: "restoRating",
+        },
       ],
     });
 
@@ -256,7 +274,7 @@ export default class Restaurants {
       attrs: [
         {
           name: "type",
-          value: "button",
+          value: "submit",
         },
         {
           name: "class",
@@ -283,31 +301,16 @@ export default class Restaurants {
     addForm.appendChild(restoDivTelephone);
     addForm.appendChild(restoRatingDiv);
     addForm.appendChild(btn);
-
-    //! Add an event listener to the button that extracts the data from the form
-    btn.addEventListener("click", () => {
-      const restaurantName = restoName.value;
-      const restaurantAddress = restoAddress.value;
-      const restaurantUrl = restoWebsite.value;
-      const restaurantTelephone = restoTelephone.value;
-      const restaurantRating = restoRating.value;
-      
-      this.createSmallCard({
-        name: restaurantName,
-        address: restaurantAddress,
-        url: restaurantUrl,
-        phone: restaurantTelephone,
-        rating: restaurantRating,
-        lat: lat,
-        long: long,
-        id: id
-      });
-    });
+    
     return addForm;
   }
 
-  add(item){
-	this.restaurants.push(item)  
+  add (item){
+	this.restaurants.push(item)
+  }
+
+  replace(item){
+	this.restaurants = item;
   }
 
   remove(item){
