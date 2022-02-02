@@ -1,7 +1,6 @@
 import { createElement, average } from "./utils.js";
-
 export default class Restaurant {
-  constructor({name, rating, id, address, reviews, lat, long, phone, url, openedHours, types, clickGoBack}){
+  constructor({name, rating, id, address, reviews, lat, long, phone, url, openedHours, types}){
   this.name = name;
 	this.rating = rating;
 	this.id = id;
@@ -11,7 +10,8 @@ export default class Restaurant {
 	this.long = long;
 	this.phone = phone;
 	this.url = url;
-	this.openedHours = openedHours;
+	this.openedHours = openedHours || [];
+  this.types = types
 }
 
   //! Clear Markers
@@ -23,9 +23,7 @@ export default class Restaurant {
 
   //! Create Small Card
   createSmallCard({photo}) {
-
     let randomNumber = Math.ceil(Math.random() * 50)
-
     photo = photo || "https://mdbootstrap.com/img/Photos/Horizontal/Food/8-col/img("+randomNumber+").jpg";
 
     //! Create Small Card
@@ -113,13 +111,10 @@ export default class Restaurant {
   }
 
   //! Create Big Card
-  createBigCard({ name, address, reviews, lat, long, id, types, clickGoBack, phone, url, openedHours, rating}) {
+  createBigCard({reviews, clickGoBack, openedHours, phone}) {
     clickGoBack = clickGoBack || Function;
-    openedHours = openedHours || [];
-    reviews = reviews || [];
-
-    let displayComments = this.displayComment;
-    let displayModals = this.displayModal.bind(this);
+    this.openedHours = openedHours || [];
+    this.reviews = reviews || [];
 
     //! create bigCard
     const bigCard = createElement({
@@ -151,7 +146,6 @@ export default class Restaurant {
     bigCard.appendChild(imageCard);
 
     //! create img
-    
     const image = createElement({
       tag: "img",
       attrs: [
@@ -254,7 +248,7 @@ export default class Restaurant {
       attrs: [{ name: "class", value: "mb-2" }],
     });
 
-    restoType.textContent = types;
+    restoType.textContent = this.types;
 
      //! append restoType to cardContent
      cardContent.appendChild(restoType);
@@ -286,14 +280,14 @@ export default class Restaurant {
 
     const cardPhone = document.createElement("p");
     cardPhone.classList.add("card-text");
-    cardPhone.textContent = this.phone;
+    cardPhone.textContent = phone;
 
     //! append cardPhone to cardContent
     cardContent.appendChild(cardPhone);
 
     const cardUrl = document.createElement("a");
     cardUrl.classList.add("card-text");
-    cardUrl.setAttribute("href", url);
+    cardUrl.setAttribute("href", this.url);
     cardUrl.setAttribute("target", "_blank");
     cardUrl.textContent = this.url;
 
@@ -361,12 +355,13 @@ export default class Restaurant {
 
     //! append ratingsCommentsContainer to bigCard
     bigCard.appendChild(ratingsCommentsContainer);
+
     //! calling display rating function
     const commentContainer = createElement({
       tag: "ul"
     })
-    reviews.forEach((item) => {
-      displayComments(commentContainer, item);
+    this.reviews.forEach((item) => {
+      this.displayComment(commentContainer, item);
     });
 
     bigCard.appendChild(commentContainer)
@@ -409,7 +404,7 @@ export default class Restaurant {
     modalTargetContainer.appendChild(modalTargetBtn);
 
     modalTargetBtn.addEventListener("click", () => {
-      displayModals(this.name, this.id);
+      this.displayModal(this.name, this.id);
       $("#modalContactForm").modal();
     });
 
@@ -441,291 +436,8 @@ export default class Restaurant {
     return bigCard;
   }
 
-  // Add Form
-  addForm(lat, long, id) {
-    //! create a unique ID
-
-    //! Create Form
-    //! Add MDB bootstrap forms to the info window using javascript
-    const addForm = createElement({
-      tag: "form",
-      attrs: [
-        {
-          name: "id",
-          value: "id",
-        },
-        {
-          name: "action",
-          value: "post",
-        },
-      ],
-    });
-
-    //! Restaurant Name Input
-    const restoDivName = createElement({
-      tag: "div",
-      attrs: [
-        {
-          name: "class",
-          value: "md-form",
-        },
-      ],
-    });
-
-    const restoName = createElement({
-      tag: "input",
-      attrs: [
-        {
-          name: "type",
-          value: "text",
-        },
-        {
-          name: "id",
-          value: "inputMDEx",
-        },
-        {
-          name: "class",
-          value: "form-control restaurant-name",
-        },
-      ],
-    });
-
-    const restoNameHolder = createElement({
-      tag: "label",
-      attrs: [
-        {
-          name: "for",
-          value: "inputMDEx",
-        },
-      ],
-    });
-
-    restoNameHolder.textContent = "Restaurant Name";
-
-    //! Append Restaurant Name
-    restoDivName.appendChild(restoName);
-    restoDivName.appendChild(restoNameHolder);
-
-    //! Restaurant Address Input
-    const restoDivAddress = createElement({
-      tag: "div",
-      attrs: [
-        {
-          name: "class",
-          value: "md-form",
-        },
-      ],
-    });
-
-    const restoAddress = createElement({
-      tag: "input",
-      attrs: [
-        {
-          name: "type",
-          value: "text",
-        },
-        {
-          name: "id",
-          value: "inputMDEx",
-        },
-        {
-          name: "class",
-          value: "form-control restaurant-address",
-        },
-      ],
-    });
-
-    const restoAddressHolder = createElement({
-      tag: "label",
-      attrs: [
-        {
-          name: "for",
-          value: "inputMDEx",
-        },
-      ],
-    });
-
-    restoAddressHolder.textContent = "Address";
-
-    //! Append Restaurant Address
-    restoDivAddress.appendChild(restoAddress);
-    restoDivAddress.appendChild(restoAddressHolder);
-
-    const restoDivWebsite = createElement({
-      tag: "div",
-      attrs: [
-        {
-          name: "class",
-          value: "md-form",
-        },
-      ],
-    });
-
-    //! Restaurant Website Input
-    const restoWebsite = createElement({
-      tag: "input",
-      attrs: [
-        {
-          name: "type",
-          value: "text",
-        },
-        {
-          name: "id",
-          value: "inputMDEx",
-        },
-        {
-          name: "class",
-          value: "form-control restaurant-website",
-        },
-      ],
-    });
-
-    const restoWebsiteHolder = createElement({
-      tag: "label",
-      attrs: [
-        {
-          name: "for",
-          value: "inputMDEx",
-        },
-      ],
-    });
-
-    restoWebsiteHolder.textContent = "Restaurant Website";
-
-    //! Append Restaurant Website
-    restoDivWebsite.appendChild(restoWebsite);
-    restoDivWebsite.appendChild(restoWebsiteHolder);
-
-    //! Restaurant Telephone Input
-    const restoDivTelephone = createElement({
-      tag: "div",
-      attrs: [
-        {
-          name: "class",
-          value: "md-form",
-        },
-      ],
-    });
-
-    const restoTelephone = createElement({
-      tag: "input",
-      attrs: [
-        {
-          name: "type",
-          value: "text",
-        },
-        {
-          name: "id",
-          value: "inputMDEx",
-        },
-        {
-          name: "class",
-          value: "form-control restaurant-telephone",
-        },
-      ],
-    });
-
-    const restoTelephoneHolder = createElement({
-      tag: "label",
-      attrs: [
-        {
-          name: "for",
-          value: "inputMDEx",
-        },
-      ],
-    });
-
-    restoTelephoneHolder.textContent = "Restaurant Telephone";
-
-    //! Append Restaurant Telephone
-    restoDivTelephone.appendChild(restoTelephone);
-    restoDivTelephone.appendChild(restoTelephoneHolder);
-
-    //! Restaurant Rating
-    const restoRatingDiv = createElement({
-      tag: "div",
-      attrs: [
-        {
-          name: "class",
-          value: "add-restaurant-rating",
-        },
-      ],
-    });
-
-    const restoRating = createElement({
-      tag: "select",
-      attrs: [
-        {
-          name: "class",
-          value: "mdb-select md-form colorful-select dropdown-primary",
-        },
-      ],
-    });
-
-    let optOne = document.createElement("option");
-    optOne.setAttribute("value", "1");
-    optOne.textContent = "One";
-
-    let optTwo = document.createElement("option");
-    optTwo.setAttribute("value", "2");
-    optTwo.textContent = "Two";
-
-    let optThree = document.createElement("option");
-    optThree.setAttribute("value", "3");
-    optThree.textContent = "Three";
-
-    let optFour = document.createElement("option");
-    optFour.setAttribute("value", "4");
-    optFour.textContent = "Four";
-
-    let optFive = document.createElement("option");
-    optFive.setAttribute("value", "5");
-    optFive.textContent = "Five";
-
-    let colorBlue = document.createElement("label");
-    colorBlue.classList.add("mdb-main-label");
-    colorBlue.textContent = "Rating: ";
-
-    //! Add Button
-    const btn = createElement({
-      tag: "button",
-      attrs: [
-        {
-          name: "type",
-          value: "button",
-        },
-        {
-          name: "class",
-          value: "btn btn-primary add-restaurant",
-        },
-      ],
-    });
-
-    btn.textContent = "Add Restaurant";
-
-    //! Append Ratings
-    restoRatingDiv.appendChild(colorBlue);
-    restoRating.appendChild(optOne);
-    restoRating.appendChild(optTwo);
-    restoRating.appendChild(optThree);
-    restoRating.appendChild(optFour);
-    restoRating.appendChild(optFive);
-    restoRatingDiv.appendChild(restoRating);
-
-    //! Append All Divs to Form
-    addForm.appendChild(restoDivName);
-    addForm.appendChild(restoDivAddress);
-    addForm.appendChild(restoDivWebsite);
-    addForm.appendChild(restoDivTelephone);
-    addForm.appendChild(restoRatingDiv);
-    addForm.appendChild(btn);
-
-   
-    return addForm;
-  }
-
-  // display ratings and comments
-  displayComment(el, item) {
+   //! display ratings and comments
+   displayComment(el, item) {
    
     //! create li
     const ratingsCommentsList = createElement({
@@ -820,7 +532,7 @@ export default class Restaurant {
     console.log(reviews);
   }
 
-  // MODAL
+  //! MODAL
   displayModal(name, id) {
     const displayComments = this.displayComment;
     const bigCardsContainer = document.getElementById("big-cards");
@@ -860,7 +572,7 @@ export default class Restaurant {
     //! init title of the modal
     const modalTitle = document.createElement("h4");
     modalTitle.classList.add("modal-title", "w-100", "font-weight-bold");
-    modalTitle.textContent = this.name;
+    modalTitle.textContent = name;
 
     //! append modalTitle to the 4th div
     forthDiv.appendChild(modalTitle);
@@ -1009,12 +721,11 @@ export default class Restaurant {
      
     };
 
-
     //! add event listener to the submit btn
     submitBtn.addEventListener("click", function () {
       const nameWriteComment = userNameInput.value;
       const messageWriteComment = mdFormTextarea.value;
-      const commentsList = document.querySelector('#comments' + this.id)
+      const commentsList = document.querySelector('#comments' + id)
       displayComments(commentsList, {
         rating: amberStar(),
         comment: messageWriteComment,
